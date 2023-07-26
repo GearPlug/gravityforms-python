@@ -15,10 +15,12 @@ class Client(object):
     def list_entries(self):
         return self.get("entries")
 
-    def filter_entries(self, filter_field, filter_value, filter_operator, sorting_key=None, sorting_direction=None):
+    def filter_entries(self, filter_field, filter_value, filter_operator, sorting_direction=None, page_size=None):
         query = f'entries?search={{"field_filters": [{{"key":"{filter_field}","value":"{filter_value}","operator":"{filter_operator}"}}]}}'
         if sorting_direction:
             query += f"&sorting[direction]={sorting_direction}"
+        if page_size:
+            query += f"&paging[page_size]={page_size}"
         return self.get(query)
 
     def list_forms(self):
