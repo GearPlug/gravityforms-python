@@ -18,7 +18,13 @@ entries = client.list_entries()
 ```
 ### Filter entries
 ```python
-entries = client.filter_entries(filter_field, filter_value, filter_operator, sorting_direction=None, page_size=None)
+entries = client.filter_entries(filter_field, 
+            filter_value, 
+            filter_operator, 
+            sorting_direction=None, 
+            page_size=None, 
+            form_id=None
+)
 ```
 ### List Forms
 ```python
@@ -26,5 +32,5 @@ forms = client.list_forms()
 ```
 ### Get Form detail
 ```python
-form = client.get_form_detail(form_id)
+form = client.get_form(form_id)
 ```

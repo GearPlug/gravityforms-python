@@ -9,24 +9,31 @@ class Client(object):
     def __init__(self, base_url, consumer_key, consumer_secret):
         #TODO: Fix possible base_url different inputs.
         self.URL = f"{base_url}wp-json/gf/v2/"
-        timestamp = str(int(time.time())+1000)
-        self.oauth = OAuth1(consumer_key, client_secret=consumer_secret, timestamp=timestamp)
+        # timestamp = str(int(time.time())+1000)
+        self.oauth = OAuth1(consumer_key, client_secret=consumer_secret)
 
     def list_entries(self):
         return self.get("entries")
 
-    def filter_entries(self, filter_field, filter_value, filter_operator, sorting_direction=None, page_size=None):
-        query = f'entries?search={{"field_filters": [{{"key":"{filter_field}","value":"{filter_value}","operator":"{filter_operator}"}}]}}'
+    def filter_entries(self, filter_field, filter_value, filter_operator, sorting_direction=None, page_size=None, form_id=None):
+        query = "entries?"
+        if form_id:
+            query += f"form_ids[0]={form_id}&"
+        query += f'search={{"field_filters": [{{"key":"{filter_field}","value":"{filter_value}","operator":"{filter_operator}"}}]}}'
         if sorting_direction:
             query += f"&sorting[direction]={sorting_direction}"
         if page_size:
             query += f"&paging[page_size]={page_size}"
+        print(query)
         return self.get(query)
 
     def list_forms(self):
         return self.get("forms")
 
-    def get_form_detail(self, form_id):
+    def get_form(self, form_id):
+        return self.get(f"forms/{form_id}")
+
+    def get_form_results(self, form_id):
         return self.get(f"forms/{form_id}/results")
 
     def get(self, endpoint, **kwargs):
