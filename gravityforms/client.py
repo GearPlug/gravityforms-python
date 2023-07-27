@@ -24,7 +24,6 @@ class Client(object):
             query += f"&sorting[direction]={sorting_direction}"
         if page_size:
             query += f"&paging[page_size]={page_size}"
-        print(query)
         return self.get(query)
 
     def list_forms(self):
