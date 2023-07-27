@@ -8,9 +8,17 @@ from gravityforms.exceptions import UnauthorizedError, WrongFormatInputError, Co
 class Client(object):
     def __init__(self, base_url, consumer_key, consumer_secret):
         #TODO: Fix possible base_url different inputs.
-        self.URL = f"{base_url}wp-json/gf/v2/"
+        url = self.verify_url(base_url)
+        self.URL = f"{url}wp-json/gf/v2/"
         # timestamp = str(int(time.time())+1000)
         self.oauth = OAuth1(consumer_key, client_secret=consumer_secret)
+
+    def verify_url(self, url):
+        if not url.startswith('http://') and not url.startswith('https://'):
+            url = 'https://' + url
+        if not url.endswith('/'):
+            url += '/'    
+        return url
 
     def list_entries(self):
         return self.get("entries")
